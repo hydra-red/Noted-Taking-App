@@ -1,12 +1,8 @@
 import { Router } from "express";
+import {getNotes} from "../controllers/notes.controllers.js" 
 
 const router = Router();
 
-router.get("/",(req,res)=>{
-    res.status(200).json({
-        status:200,
-        message:"Data fetched Successfully"
-    })
-})
+router.get("/",getNotes)
 
 export default router
