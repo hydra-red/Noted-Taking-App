@@ -6,8 +6,8 @@ import toast from "react-hot-toast";
 
 function App() {
   return (
-    <div>
-    <button onClick={()=> (toast.success("congrats"))} className="btn">Click Me</button>
+    <div className="relative h-full w-full">
+    <div className="absolute insert-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#212529_60%,#949494_100%)]"/>
       <Routes>
         <Route path="/" element={<Home />}/>
         <Route path="/create" element={<CreateNote />}/>
