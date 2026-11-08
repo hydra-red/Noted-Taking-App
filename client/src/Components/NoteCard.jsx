@@ -1,8 +1,31 @@
 import { Link } from "react-router";
 import { PenSquareIcon, Trash2Icon } from "lucide-react";
-import {formateDate} from "../lib/utils.js"
+import { formateDate } from "../lib/utils.js";
+import axiosInstance from "../lib/axios.js";
+import { toast } from "react-hot-toast";
 
-function NoteCard({ note }) {
+function NoteCard({ note, setNote }) {
+  async function handleDelete(e, id) {
+    e.preventDefault();
+
+    if (!window.confirm("Are you sure you want delete the note?")) return;
+
+    try {
+      const response = await axiosInstance.delete(`/notes/${id}`);
+      if (!response.data.success) {
+        console.log("Something went worng while deleting the note");
+      }
+      setNote((prev) => prev.filter((note) => note._id !== id));
+      toast.success("Successfully deleted the note");
+    } catch (error) {
+      console.log(
+        "Something went worng while deleting the note",
+        error.message,
+      );
+      toast.error("Error while deleting the note");
+    }
+  }
+
   return (
     <Link
       to={`/note/${note._id}`}
@@ -12,11 +35,16 @@ function NoteCard({ note }) {
         <h3 className="card-title text-base-content">{note.title}</h3>
         <p className="text-base-content/70 line-clamp-3">{note.content}</p>
         <div className="card-actions justify-between items-center mt-4">
-          <span className="text-sm text-base-content/60">{formateDate(new Date(note.createdAt))}</span>
+          <span className="text-sm text-base-content/60">
+            {formateDate(new Date(note.createdAt))}
+          </span>
           <div className="flex items-center gap-1">
-            <PenSquareIcon  className="size-4"/>
-            <button className="btn btn-ghost btn-xs text-error">
-                <Trash2Icon className="size-4"/>
+            <PenSquareIcon className="size-4" />
+            <button
+              className="btn btn-ghost btn-xs text-error"
+              onClick={(e) => handleDelete(e, note._id)}
+            >
+              <Trash2Icon className="size-4" />
             </button>
           </div>
         </div>

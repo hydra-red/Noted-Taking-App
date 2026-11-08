@@ -4,6 +4,7 @@ import RateLimited from "../Components/RateLimitied.jsx";
 import toast from "react-hot-toast";
 import NoteCard from "../Components/NoteCard.jsx";
 import axiosInstance from "../lib/axios.js";
+import EmptyNote from "../Components/EmptyNote.jsx";
 
 function Home() {
   const [isRateLimited, setIsRateLimited] = useState(false);
@@ -42,10 +43,11 @@ function Home() {
           <div className="text-center text-primary py-10">Loading Notes...</div>
         )}
 
+        {notes.length == 0 && !isRateLimited && <EmptyNote /> }
         {notes.length > 0 && !isRateLimited && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {notes.map((note) => (
-              <NoteCard key={note._id} note={note}/>
+              <NoteCard key={note._id} note={note} setNote={setNotes}/>
             ))}
           </div>
         )}
